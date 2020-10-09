@@ -1,0 +1,8 @@
+[console_scripts]
+check = api_ai.cli:check
+entities = api_ai.cli:entities
+intents = api_ai.cli:intents
+query = api_ai.cli:query
+schema = api_ai.cli:schema
+templates = api_ai.cli:gen_templates
+
