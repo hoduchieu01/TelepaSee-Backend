@@ -25,3 +25,4 @@ Flask-JWT==0.3.2
 Flask-CORS==3.0.8
 Flask-HTTPAuth==4.1.0
 passlib==1.7.2
+azure-cognitiveservices-speech==1.13.0
