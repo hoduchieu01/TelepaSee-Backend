@@ -5,7 +5,8 @@ from dataclasses_json import dataclass_json
 
 @dataclass_json
 @dataclass
-class RequestTTSBroadCastDTO:
+class VideoDataDTO:
     name: str
-    text_data: str
+    video_data: str
+    sound_data: str
     room: str

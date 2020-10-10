@@ -8,3 +8,4 @@ from dataclasses_json import dataclass_json
 class RequestSTTBroadCastDTO:
     name: str
     voice_data: str
+    room: str

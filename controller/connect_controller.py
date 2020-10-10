@@ -22,6 +22,7 @@ def levae_room_request(data):
     else:
         room_data_dto = RoomDataDTO.from_dict(data)
 
+    print(f"leave {room_data_dto.room}")
     send(f"leave {room_data_dto.room}")
     leave_room(room_data_dto.room)
 
