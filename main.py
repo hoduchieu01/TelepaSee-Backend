@@ -1,8 +1,9 @@
 from flask import Flask
 
-from controller import socketio
+import controller
+
+app = Flask(__name__)
+app.register_blueprint(controller.tts_blueprint, url_prefix="/tts")
 
 if __name__ == '__main__':
-    app = Flask(__name__)
-    socketio.init_app(app)
-    socketio.run(app, host='0.0.0.0', port=8080, debug=False, use_reloader=False)
+    app.run('0.0.0.0', 8080, use_reloader=False)

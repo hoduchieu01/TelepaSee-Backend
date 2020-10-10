@@ -1,5 +1,7 @@
-from flask_socketio import SocketIO
+from flask import Blueprint
 
-socketio = SocketIO(always_connect=True, cors_allowed_origins='*')
+tts_blueprint = Blueprint('tts', __name__)
+stt_blueprint = Blueprint('tts', __name__)
 
-from . import tts_controller, connect_controller
+from . import tts_controller
+from . import stt_controller
