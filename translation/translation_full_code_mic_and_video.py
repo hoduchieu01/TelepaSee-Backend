@@ -167,3 +167,5 @@ def translation_continuous():
 
     recognizer.stop_continuous_recognition()
     # </TranslationContinuous>
+
+translation_once_from_mic()

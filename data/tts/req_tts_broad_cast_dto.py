@@ -9,3 +9,4 @@ class RequestTTSBroadCastDTO:
     name: str
     text_data: str
     room: str
+{"name":"laskdj", "text_data":"Hello world", "room":"1234"}

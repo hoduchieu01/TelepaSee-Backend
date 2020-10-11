@@ -1,18 +1,17 @@
 import ast
 import base64
+import os
 
 from flask_socketio import send
 
-from TTS.text_to_speech import tts
 from controller import socketio
 from data.translate.rep_translate_dto import ReplyTranslateDTO
 from data.translate.req_translate_dto import RequestTranslateDTO
-from data.tts.rep_tts_broad_cast_dto import ReplyTTSBroadCastDTO
-from data.tts.req_tts_broad_cast_dto import RequestTTSBroadCastDTO
+from translation.translation_with_mic import translation_once_from_mic
 
 
 @socketio.on('translate')
-def stt_controller(data):
+def translate_controller(data):
     request_translate_dto = RequestTranslateDTO("", "", "")
     if type(data) == str:
         dict_request_data_json = ast.literal_eval(data)
@@ -20,9 +19,17 @@ def stt_controller(data):
     else:
         request_translate_dto = RequestTranslateDTO.from_dict(data)
 
-    translated_message = translate(request_translate_dto.message)
-    reply_dto = ReplyTranslateDTO(request_translate_dto.name, translated_message)
+    # 갖고온 음성데이터를 파일로 만듬
+    with open("translate_voice_source.wav", 'wb') as f:
+        # base64로 되어있는 음성데이터를 test wav 파일로 변경함
+        byte_array = base64.b64decode(request_translate_dto.voice_data)
+        f.write(byte_array)
 
+    translated_message = translation_once_from_mic("translate_voice_source.wav")
+    os.remove("translate_voice_source.wav")
+
+    reply_dto = ReplyTranslateDTO(request_translate_dto.name, translated_message[1])
     send(reply_dto.to_json(), room=request_translate_dto.room)
 
+    # 갖고온 음성 파일을 제거
     pass

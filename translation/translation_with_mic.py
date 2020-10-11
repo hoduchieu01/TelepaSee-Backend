@@ -9,6 +9,8 @@ Translation recognition for the Microsoft Cognitive Services Speech SDK
 
 import time
 
+from azure.cognitiveservices.speech.audio import AudioInputStream
+
 try:
     import azure.cognitiveservices.speech as speechsdk
 except ImportError:
@@ -19,6 +21,7 @@ except ImportError:
     installation instructions.
     """)
     import sys
+
     sys.exit(1)
 
 # Set up the subscription info for the Speech Service:
@@ -26,8 +29,7 @@ except ImportError:
 speech_key, service_region = "98a7beaa5d4447cd8a60a66692019e32", "koreacentral"
 
 
-
-def translation_once_from_mic():
+def translation_once_from_mic(file_name: str) -> ():
     """performs one-shot speech translation from input from an audio file"""
     # <TranslationOnceWithMic>
     # set up translation parameters: source language and target languages
@@ -35,7 +37,7 @@ def translation_once_from_mic():
         subscription=speech_key, region=service_region,
         speech_recognition_language='en-US',
         target_languages=('ko'))
-    audio_config = speechsdk.audio.AudioConfig(use_default_microphone=True)
+    audio_config = speechsdk.audio.AudioConfig(filename=file_name)
 
     # Creates a translation recognizer using and audio file as input.
     recognizer = speechsdk.translation.TranslationRecognizer(
@@ -50,11 +52,14 @@ def translation_once_from_mic():
     result = recognizer.recognize_once()
 
     # Check the result
+    print(result)
     if result.reason == speechsdk.ResultReason.TranslatedSpeech:
         print("""Recognized: {}
         Korean translation: {}
         """.format(
             result.text, result.translations['ko']))
+
+        return (result.text, result.translations['ko'])
     elif result.reason == speechsdk.ResultReason.RecognizedSpeech:
         print("Recognized: {}".format(result.text))
     elif result.reason == speechsdk.ResultReason.NoMatch:
@@ -63,4 +68,6 @@ def translation_once_from_mic():
         print("Translation canceled: {}".format(result.cancellation_details.reason))
         if result.cancellation_details.reason == speechsdk.CancellationReason.Error:
             print("Error details: {}".format(result.cancellation_details.error_details))
+
+    return None
     # </TranslationOnceWithMic>
